@@ -1,17 +1,35 @@
 Vagrant.configure("2") do |config|
+  # This block is used to configure the Vagrant environment.
+  # The argument "2" specifies the version of the Vagrant configuration format being used.
+  # Inside this block, you define the various settings, virtual machines, and plugins for your Vagrant setup.
+  # Enable the hostmanager plugin, which helps manage host entries for Vagrant-managed machines.
   config.hostmanager.enabled = true 
+  
+  # Manage the host entries for the local machine, allowing Vagrant to automatically update the hosts file.
   config.hostmanager.manage_host = true
   
 ### DB vm  ####
-  config.vm.define "db01" do |db01|
-    db01.vm.box = "eurolinux-vagrant/centos-stream-9"
-    db01.vm.hostname = "db01"
-    db01.vm.network "private_network", ip: "192.168.56.55"
-    db01.vm.provider "virtualbox" do |vb|
-     vb.memory = "600"
-   end
-
+# Define a virtual machine named "db01" for database operations.
+# This VM will use the CentOS Stream 9 base box, which is suitable for database applications.
+config.vm.define "db01" do |db01|
+  
+  # Specify the VM box to use.
+  db01.vm.box = "eurolinux-vagrant/centos-stream-9"
+  
+  # Set the hostname for this VM, which can be used to identify it within the network.
+  db01.vm.hostname = "db01"
+  
+  # Configure the network settings for this VM.
+  # It will be part of a private network with the specified IP address.
+  db01.vm.network "private_network", ip: "192.168.56.55"
+  
+  # Configure the VM provider settings.
+  db01.vm.provider "virtualbox" do |vb|
+    
+    # Allocate a specific amount of memory to this VM.
+    vb.memory = "600"
   end
+end
   
 ### Memcache vm  #### 
   config.vm.define "mc01" do |mc01|
@@ -41,7 +59,7 @@ Vagrant.configure("2") do |config|
     app01.vm.provider "virtualbox" do |vb|
      vb.memory = "800"
    end
-   end
+  end
    
   
 ### Nginx VM ###
@@ -53,6 +71,13 @@ Vagrant.configure("2") do |config|
      vb.gui = true
      vb.memory = "800"
    end
+  end
 end
-  
-end
+
+
+# VMs Overview:
+  # db01 - MySQL Database server VM using CentOS Stream 9, IP: 192.168.56.55
+  # mc01 - Memcache server VM using CentOS Stream 9, IP: 192.168.56.54
+  # rmq01 - RabbitMQ server VM using CentOS Stream 9, IP: 192.168.56.53
+  # app01 - Application server VM using CentOS Stream 9, IP: 192.168.56.52
+  # web01 - Nginx web server VM using Ubuntu Jammy, IP: 192.168.56.51
